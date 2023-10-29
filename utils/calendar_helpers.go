@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -46,9 +46,9 @@ func getEventsToday(srv *calendar.Service) []*EventInfo {
 func eventsToString(events []*EventInfo) string {
 	var event string
 	result := ""
-	for i, item := range events {
-		event = fmt.Sprintf("%d. Event Name: %s, Start Time: %s, End Time %s\n", 
-			i, item.summary, item.start, item.end)
+	for _, item := range events {
+		event = fmt.Sprintf("[%s, %s, %s]\n", 
+			item.summary, item.start, item.end)
 		result += event
 	}
 
