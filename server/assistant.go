@@ -1,10 +1,8 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
-	"regexp"
 
 	openai "github.com/sashabaranov/go-openai"
 	"google.golang.org/api/calendar/v3"
@@ -20,10 +18,10 @@ type Assistant struct {
 	systemMessage string
 }
 
-type GPTMsg struct {
-	Id      int
-	Message string
-	Events  []*EventInfo
+type GptMsg struct {
+	Id      int `json:"id"`
+	Message string `json:"message"`
+	Events  []*EventInfo `json:"events"`
 }
 
 func CreateAssistant() *Assistant {
@@ -50,7 +48,9 @@ func (asst *Assistant) StartAssistant() error {
 	// 	context.Background(),
 	// 	openai.ChatCompletionRequest{
 	// 		Model: openai.GPT3Dot5Turbo,
-	//		ResponseFormat: ChatCompletionResponseFormatTypeJSONObject,
+	// 		ResponseFormat: &openai.ChatCompletionResponseFormat{
+	// 			Type: openai.ChatCompletionResponseFormatTypeJSONObject,
+	// 		},
 	// 		Messages: []openai.ChatCompletionMessage{
 	// 			{
 	// 				Role:    openai.ChatMessageRoleSystem,
@@ -68,15 +68,12 @@ func (asst *Assistant) StartAssistant() error {
 	// 	fmt.Printf("ChatCompletion error: %v\n", err)
 	// 	return errors.New("Error setting up GPT client")
 	// }
-	re := regexp.MustCompile("\\${}\\$")
-	for i, event := range events {
-		bytes, _ := json.Marshal(event)
-		fmt.Printf("%d. %v\n", i, bytes)
-	}
-	print("These are my events today: " + eventsToString(events))
-	re.FindAllString("", -1)
+	
+	print("These are my events today:\n" + eventsToString(events))
 
 	// fmt.Print(resp.Choices[0].Message.Content)
+	// msg := resp.Choices[0].Message.Content
+
 	return nil
 }
 

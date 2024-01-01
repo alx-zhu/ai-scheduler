@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -93,13 +94,10 @@ func (asst *Assistant) insertEvents(events []*EventInfo) {
 // ========== Helpers ==========
 
 func eventsToString(events []*EventInfo) string {
-	var event string
 	result := ""
-	for i, item := range events {
-		event = fmt.Sprintf("%d. Summary: %s, Start: %s, End: %s\n", i,
-			item.Summary, item.Start, item.End)
-		result += event
+	for _, item := range events {
+		bytes, _ := json.Marshal(item)
+		result += string(bytes) + "\n"
 	}
-
 	return result
 }
