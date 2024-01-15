@@ -41,15 +41,14 @@ func CreateAssistant() *Assistant {
 }
 
 func (asst *Assistant) StartAssistant() error {
-	// err := asst.sendGptMessage("Here are my events for today:" + eventsToString(getEventsToday(asst.srv)))
+	err := asst.sendGptMessage("Here are my events for today:" + eventsToString(getEventsToday(asst.srv)))
 
-	// if err != nil {
-	// 	fmt.Printf("Error communicating with OpenAI: %v\n", err)
-	// 	return err
-	// }
+	if err != nil {
+		fmt.Printf("Error communicating with OpenAI: %v\n", err)
+		return err
+	}
 
-	// go asst.runAssistant()
-	asst.sendTestMessage()
+	go asst.runAssistant()
 	
 	return nil
 }
